@@ -1,6 +1,6 @@
 <div class="ofertas-container">
   <section class="hero-ofertas">
-    <h1>🔥 Ofertas Especiales</h1>
+    <h1>Ofertas Especiales</h1>
     <p>¡Aprovecha nuestros descuentos por tiempo limitado!</p>
     <p class="fecha-oferta">Válido hasta: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
   </section>
@@ -33,7 +33,7 @@
               <span class="precio-oferta">S/ {{ calcularPrecioConDescuento(producto.precioOriginal, producto.descuento) | number:'1.2-2' }}</span>
             </div>
             <button class="btn-oferta" (click)="agregarAlCarrito(producto, $event)">
-              🛒 Añadir al carrito
+              Añadir al carrito
             </button>
           </div>
         </div>
