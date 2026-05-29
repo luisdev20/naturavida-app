@@ -1,0 +1,43 @@
+<div class="ofertas-container">
+  <section class="hero-ofertas">
+    <h1>🔥 Ofertas Especiales</h1>
+    <p>¡Aprovecha nuestros descuentos por tiempo limitado!</p>
+    <p class="fecha-oferta">Válido hasta: {{ fechaActual | date : 'dd/MM/yyyy' }}</p>
+  </section>
+
+  @if (cargando) {
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+  } @else if (productosOferta.length === 0) {
+    <div class="empty-state">
+      <p>No hay ofertas disponibles en este momento.</p>
+      <a routerLink="/catalogo" class="btn-primary">Ver catálogo</a>
+    </div>
+  } @else {
+    <div class="ofertas-grid">
+      @for (producto of productosOferta; track producto.id) {
+        <div class="oferta-card">
+          <div class="descuento-badge">
+            -{{ producto.descuento }}%
+          </div>
+          <a [routerLink]="['/producto', producto.id]" class="img-link">
+            <img [src]="producto.imagen" [alt]="producto.nombre" loading="lazy">
+          </a>
+          <div class="oferta-info">
+            <span class="marca">{{ producto.marca | uppercase }}</span>
+            <h3>{{ producto.nombre }}</h3>
+            <p class="detalle">{{ producto.detalle }}</p>
+            <div class="precios">
+              <span class="precio-original">S/ {{ producto.precioOriginal | number:'1.2-2' }}</span>
+              <span class="precio-oferta">S/ {{ calcularPrecioConDescuento(producto.precioOriginal, producto.descuento) | number:'1.2-2' }}</span>
+            </div>
+            <button class="btn-oferta" (click)="agregarAlCarrito(producto, $event)">
+              🛒 Añadir al carrito
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
