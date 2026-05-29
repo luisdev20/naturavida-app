@@ -230,22 +230,12 @@
     {
       "usuarioId": "1",
       "productoId": "7",
-      "nombre": "Jabón de Miel",
+      "nombre": "Jab??n de Miel",
       "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL6O_DLVzMKb-iECkoeFnQ3EZRJcBCaUmdxA&s",
       "precio": 10,
       "detalle": "100g",
-      "cantidad": 1,
+      "cantidad": 4,
       "id": "q-4FCxJmVP8"
-    },
-    {
-      "usuarioId": "1",
-      "productoId": "7",
-      "nombre": "Jabón de Miel",
-      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL6O_DLVzMKb-iECkoeFnQ3EZRJcBCaUmdxA&s",
-      "precio": 10,
-      "detalle": "100g",
-      "cantidad": 1,
-      "id": "Uqo1SitS2pg"
     },
     {
       "usuarioId": "1",
@@ -269,13 +259,123 @@
     },
     {
       "usuarioId": "1",
-      "productoId": "7",
-      "nombre": "Jabón de Miel",
-      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL6O_DLVzMKb-iECkoeFnQ3EZRJcBCaUmdxA&s",
+      "productoId": "1",
+      "nombre": "Shampoo de Romero",
+      "imagen": "https://i.ebayimg.com/images/g/m7kAAeSwS8FovPGc/s-l1600.webp",
+      "precio": 25,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "-kOY5VW2rTI"
+    },
+    {
+      "usuarioId": "1",
+      "productoId": "3",
+      "nombre": "Shampoo de Coco",
+      "imagen": "https://www.yaxcava.com/cdn/shop/products/Yaxcava-Coco-Izquierdo_f2c08cc1-c49b-42bb-96a5-aadba344e210_1000x.jpg?v=1617819633",
+      "precio": 28,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "wXBmbjhL5vU"
+    },
+    {
+      "usuarioId": "1",
+      "productoId": "5",
+      "nombre": "Tónico de Cebolla",
+      "imagen": "https://feyal.cl/wp-content/uploads/2024/08/KL010039.jpg",
+      "precio": 18,
+      "detalle": "100ml",
+      "cantidad": 1,
+      "id": "MjUlO3c1vpM"
+    },
+    {
+      "usuarioId": "1",
+      "productoId": "12",
+      "nombre": "Desodorante de Coco",
+      "imagen": "https://http2.mlstatic.com/D_NQ_NP_780296-MLA106715692026_022026-O.webp",
+      "precio": 16,
+      "detalle": "50g",
+      "cantidad": 1,
+      "id": "NX-FtKUHQns"
+    },
+    {
+      "usuarioId": -999,
+      "productoId": "1",
+      "nombre": "Test",
+      "imagen": "",
       "precio": 10,
+      "detalle": "test",
+      "cantidad": 1,
+      "id": "IjGzEjspB-c"
+    },
+    {
+      "usuarioId": 1,
+      "productoId": 1,
+      "nombre": "Shampoo de Romero",
+      "imagen": "https://i.ebayimg.com/images/g/m7kAAeSwS8FovPGc/s-l1600.webp",
+      "precio": 25,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "KzA8GOByuiw"
+    },
+    {
+      "usuarioId": 1,
+      "productoId": 6,
+      "nombre": "Acondicionador de Romero",
+      "imagen": "https://www.surnativa.cl/wp-content/uploads/2025/02/Acondicionador-romero-240-ml2.jpg",
+      "precio": 24,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "Z09z1BXLeJI"
+    },
+    {
+      "usuarioId": 1,
+      "productoId": 11,
+      "nombre": "Aceite de Ricino",
+      "imagen": "https://www.artstoreperu.com/wp-content/uploads/2019/12/Aceite-de-Ricino.png",
+      "precio": 14,
+      "detalle": "30ml",
+      "cantidad": 1,
+      "id": "lPrjNTuceQc"
+    },
+    {
+      "usuarioId": -522649,
+      "productoId": 1,
+      "nombre": "Shampoo de Romero",
+      "imagen": "https://i.ebayimg.com/images/g/m7kAAeSwS8FovPGc/s-l1600.webp",
+      "precio": 25,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "WaL1u6GL3Pc"
+    },
+    {
+      "usuarioId": -522649,
+      "productoId": 2,
+      "nombre": "Shampoo de Cebolla",
+      "imagen": "https://m.media-amazon.com/images/I/51S5fESzUoL._SS400_.jpg",
+      "precio": 22,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "E3LYeqR8tF0"
+    },
+    {
+      "usuarioId": -522649,
+      "productoId": 3,
+      "nombre": "Shampoo de Coco",
+      "imagen": "https://www.yaxcava.com/cdn/shop/products/Yaxcava-Coco-Izquierdo_f2c08cc1-c49b-42bb-96a5-aadba344e210_1000x.jpg?v=1617819633",
+      "precio": 28,
+      "detalle": "250ml",
+      "cantidad": 1,
+      "id": "Kq7vVTemraU"
+    },
+    {
+      "usuarioId": -522649,
+      "productoId": 9,
+      "nombre": "Jabón de Carbón Activado",
+      "imagen": "https://arelivalsoaps.com/cdn/shop/files/Carbon.jpg?v=1714839084&width=1946",
+      "precio": 11,
       "detalle": "100g",
       "cantidad": 1,
-      "id": "WyP44ol8TZg"
+      "id": "Cz2w56SB1CQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

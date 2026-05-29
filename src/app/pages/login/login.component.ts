@@ -37,13 +37,14 @@ export class LoginComponent {
           return;
         }
         const user = users[0];
+        const destino = user.rol === 'admin' ? ['/admin'] : ['/'];
         if (user.id) {
           this.carritoService.sincronizarCarrito(user.id).subscribe({
-            next: () => this.router.navigate(['/']),
-            error: () => this.router.navigate(['/'])
+            next: () => this.router.navigate(destino),
+            error: () => this.router.navigate(destino)
           });
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(destino);
         }
       },
       error: () => {

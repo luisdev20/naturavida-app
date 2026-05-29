@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ItemCarrito } from '../models/carrito.model';
 import { Producto } from '../models/producto.model';
-import { Observable, tap, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, tap, switchMap, forkJoin, of, map } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -21,6 +21,16 @@ export class CarritoService {
 
   constructor(private http: HttpClient) {}
 
+ 
+  private normalizar(items: ItemCarrito[]): ItemCarrito[] {
+    return items.map(i => ({
+      ...i,
+      id: i.id !== undefined ? +i.id : undefined,
+      usuarioId: +i.usuarioId,
+      productoId: +i.productoId
+    }));
+  }
+
   private getGuestId(): number {
     if (!isPlatformBrowser(this.platformId)) return -1;
     const stored = localStorage.getItem('natura_guest_id');
@@ -32,12 +42,14 @@ export class CarritoService {
 
   getCartUserId(): number {
     const user = this.authService.currentUser();
-    return user?.id ? user.id : this.getGuestId();
+    return user?.id ? +user.id : this.getGuestId();
   }
 
   cargarCarrito(): void {
     const usuarioId = this.getCartUserId();
-    this.http.get<ItemCarrito[]>(`${this.apiUrl}?usuarioId=${usuarioId}`).subscribe({
+    this.http.get<ItemCarrito[]>(`${this.apiUrl}?usuarioId=${usuarioId}`).pipe(
+      map(items => this.normalizar(items))
+    ).subscribe({
       next: items => this._items.set(items),
       error: () => this._items.set([])
     });
@@ -45,7 +57,9 @@ export class CarritoService {
 
   agregarItem(producto: Producto, cantidad: number = 1): Observable<ItemCarrito> {
     const usuarioId = this.getCartUserId();
-    const existente = this._items().find(i => i.productoId === producto.id && i.usuarioId === usuarioId);
+    const productoId = +producto.id!;
+    const existente = this._items().find(i => i.productoId === productoId && i.usuarioId === usuarioId);
+
     if (existente && existente.id) {
       const actualizado = { ...existente, cantidad: existente.cantidad + cantidad };
       return this.http.put<ItemCarrito>(`${this.apiUrl}/${existente.id}`, actualizado).pipe(
@@ -54,7 +68,7 @@ export class CarritoService {
     }
     const nuevo: ItemCarrito = {
       usuarioId,
-      productoId: producto.id!,
+      productoId,
       nombre: producto.nombre,
       imagen: producto.imagen,
       precio: producto.precio,
@@ -95,19 +109,21 @@ export class CarritoService {
       return of(null);
     }
     const guestId = parseInt(guestIdStr, 10);
-    
+
     return this.http.get<ItemCarrito[]>(`${this.apiUrl}?usuarioId=${guestId}`).pipe(
+      map(items => this.normalizar(items)),
       switchMap(guestItems => {
         if (guestItems.length === 0) {
           localStorage.removeItem('natura_guest_id');
           this.cargarCarrito();
           return of(null);
         }
-        
+
         return this.http.get<ItemCarrito[]>(`${this.apiUrl}?usuarioId=${userId}`).pipe(
+          map(items => this.normalizar(items)),
           switchMap(userItems => {
             const requests: Observable<any>[] = [];
-            
+
             guestItems.forEach(guestItem => {
               const userItem = userItems.find(ui => ui.productoId === guestItem.productoId);
               if (userItem && userItem.id) {
@@ -119,13 +135,13 @@ export class CarritoService {
                 requests.push(this.http.put(`${this.apiUrl}/${guestItem.id}`, act));
               }
             });
-            
+
             if (requests.length === 0) {
               localStorage.removeItem('natura_guest_id');
               this.cargarCarrito();
               return of(null);
             }
-            
+
             return forkJoin(requests).pipe(
               tap(() => {
                 if (isPlatformBrowser(this.platformId)) {

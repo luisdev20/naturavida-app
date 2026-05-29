@@ -11,9 +11,12 @@
     <div class="nav-links" [class.open]="menuOpen">
   <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Inicio</a>
   <a routerLink="/catalogo" routerLinkActive="active" (click)="closeMenu()">Productos</a>
-  <a routerLink="/ofertas" routerLinkActive="active" (click)="closeMenu()">Ofertas </a>  
+  <a routerLink="/ofertas" routerLinkActive="active" (click)="closeMenu()">Ofertas</a>
   <a routerLink="/nosotros" routerLinkActive="active" (click)="closeMenu()">Nosotros</a>
   <a routerLink="/contacto" routerLinkActive="active" (click)="closeMenu()">Contacto</a>
+  @if (authService.isLoggedIn()) {
+    <a routerLink="/admin" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
+  }
 </div>
 
     <div class="nav-actions">
@@ -37,17 +40,21 @@
             </svg>
             <span class="user-name">{{ authService.currentUser()?.nombre }}</span>
           </button>
-          @if (authService.isAdmin()) {
-            <a routerLink="/admin" class="dropdown-item" (click)="closeMenu()">Panel Admin</a>
-          }
-          <button class="dropdown-item logout" (click)="logout()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            Cerrar sesión
-          </button>
+          <div class="dropdown-panel">
+            <div class="dropdown-panel-inner">
+              @if (authService.isAdmin()) {
+                <a routerLink="/admin" class="dropdown-item" (click)="closeMenu()">Panel Admin</a>
+              }
+              <button class="dropdown-item logout" (click)="logout()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
         </div>
       } @else {
         <a routerLink="/login" class="btn-login" (click)="closeMenu()">

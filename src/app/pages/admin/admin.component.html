@@ -2,123 +2,330 @@
   <div class="toast-msg" [class.toast-error]="toast.tipo === 'error'">{{ toast.mensaje }}</div>
 }
 
-<div class="admin-container">
-  <div class="admin-header">
-    <div>
-      <h1>Panel de Administración</h1>
-      <p>Gestión de productos del catálogo</p>
-    </div>
-    <button class="btn-new" (click)="abrirNuevo()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      Nuevo producto
-    </button>
-  </div>
+<div class="dashboard-layout">
 
-  <!-- FORMULARIO -->
-  @if (mostrarFormulario) {
-    <div class="form-panel">
-      <div class="form-panel-header">
-        <h3>{{ editando ? 'Editar producto' : 'Nuevo producto' }}</h3>
-        <button class="btn-close-form" (click)="cancelar()">✕</button>
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Nombre *</label>
-          <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre del producto">
-        </div>
-        <div class="form-group">
-          <label>Detalle (ej: 100ml)</label>
-          <input type="text" [(ngModel)]="form.detalle" placeholder="250ml, 100g...">
-        </div>
-        <div class="form-group">
-          <label>Precio (S/) *</label>
-          <input type="number" [(ngModel)]="form.precio" min="0" step="0.5">
-        </div>
-        <div class="form-group">
-          <label>Categoría</label>
-          <select [(ngModel)]="form.categoria">
-            @for (c of categorias; track c) {
-              <option [value]="c">{{ c }}</option>
-            }
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Marca</label>
-          <select [(ngModel)]="form.marca">
-            @for (m of marcas; track m) {
-              <option [value]="m">{{ m }}</option>
-            }
-          </select>
-        </div>
-        <div class="form-group full">
-          <label>URL de imagen</label>
-          <input type="url" [(ngModel)]="form.imagen" placeholder="https://...">
-        </div>
-        <div class="form-group full">
-          <label>Descripción</label>
-          <textarea [(ngModel)]="form.descripcion" rows="2" placeholder="Descripción del producto"></textarea>
-        </div>
-        <div class="form-group full">
-          <label>Modo de uso</label>
-          <textarea [(ngModel)]="form.modoUso" rows="2" placeholder="Instrucciones de uso"></textarea>
-        </div>
-        <div class="form-group full">
-          <label>Ingredientes</label>
-          <textarea [(ngModel)]="form.ingredientes" rows="2" placeholder="Lista de ingredientes"></textarea>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button class="btn-save" (click)="guardar()">
-          {{ editando ? 'Actualizar' : 'Guardar producto' }}
-        </button>
-        <button class="btn-cancel" (click)="cancelar()">Cancelar</button>
-      </div>
+  
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-dot"></div>
+      <span>NaturaVida</span>
     </div>
-  }
 
-  <!-- TABLA -->
-  <div class="tabla-wrapper">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Imagen</th>
-          <th>Nombre</th>
-          <th>Categoría</th>
-          <th>Marca</th>
-          <th>Precio</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (p of productos; track p.id) {
-          <tr>
-            <td><img [src]="p.imagen" [alt]="p.nombre" class="table-img"></td>
-            <td>
-              <div class="td-nombre">{{ p.nombre }}</div>
-              <div class="td-detalle">{{ p.detalle }}</div>
-            </td>
-            <td><span class="cat-tag" [class]="'cat-' + p.categoria">{{ p.categoria }}</span></td>
-            <td>{{ p.marca }}</td>
-            <td class="td-price">S/ {{ p.precio.toFixed(2) }}</td>
-            <td>
-              <div class="action-btns">
-                <button class="btn-edit" (click)="editarProducto(p)" title="Editar">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
-                <button class="btn-delete" (click)="eliminar(p)" title="Eliminar">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"></path>
-                  </svg>
-                </button>
+    <nav class="sidebar-nav">
+      <p class="nav-label">Menú</p>
+      <button class="nav-item" [class.active]="vistaActual === 'overview'" (click)="navegar('overview')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Resumen
+      </button>
+      <button class="nav-item" [class.active]="vistaActual === 'productos'" (click)="navegar('productos')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        Productos
+      </button>
+      <button class="nav-item" [class.active]="vistaActual === 'carritos'" (click)="navegar('carritos')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+        </svg>
+        Carritos
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-chip">
+        <div class="admin-avatar">{{ adminNombre[0] | uppercase }}</div>
+        <div class="admin-info">
+          <span class="admin-name">{{ adminNombre }}</span>
+          <span class="admin-role">Administrador</span>
+        </div>
+      </div>
+      <button class="btn-logout" (click)="logout()" title="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  
+  <main class="dashboard-main">
+
+    
+    @if (vistaActual === 'overview') {
+      <div class="view-header">
+        <h1>Resumen General</h1>
+        <p>Métricas actuales del sistema</p>
+      </div>
+
+      @if (cargandoMetricas) {
+        <div class="loading-state"><div class="spinner-dash"></div><span>Cargando métricas...</span></div>
+      } @else {
+        
+        <div class="metrics-grid">
+          <div class="metric-card card-green">
+            <div class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{ totalProductos }}</span>
+              <span class="metric-label">Productos en catálogo</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-teal">
+            <div class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{ totalUsuarios }}</span>
+              <span class="metric-label">Usuarios registrados</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-amber">
+            <div class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{ totalItemsCarrito }}</span>
+              <span class="metric-label">Ítems en carritos activos</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-emerald">
+            <div class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">S/ {{ valorInventario | number:'1.2-2' }}</span>
+              <span class="metric-label">Valor del inventario</span>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="overview-bottom">
+          <div class="highlights-card">
+            <h3 class="card-title">Destacados de precios</h3>
+            @if (productoMasCaro) {
+              <div class="highlight-row">
+                <div class="hl-label">
+                  <span class="hl-badge badge-high">Más caro</span>
+                  <span class="hl-name">{{ productoMasCaro.nombre }}</span>
+                </div>
+                <span class="hl-price">S/ {{ productoMasCaro.precio | number:'1.2-2' }}</span>
               </div>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+            }
+            @if (productoMasBarato) {
+              <div class="highlight-row">
+                <div class="hl-label">
+                  <span class="hl-badge badge-low">Más barato</span>
+                  <span class="hl-name">{{ productoMasBarato.nombre }}</span>
+                </div>
+                <span class="hl-price">S/ {{ productoMasBarato.precio | number:'1.2-2' }}</span>
+              </div>
+            }
+            @if (carritoMasGrande) {
+              <div class="highlight-row">
+                <div class="hl-label">
+                  <span class="hl-badge badge-cart">Carrito mayor</span>
+                  <span class="hl-name">Usuario #{{ carritoMasGrande.usuarioId }}</span>
+                </div>
+                <span class="hl-price">{{ carritoMasGrande.total }} ítems</span>
+              </div>
+            }
+          </div>
+
+          <div class="categorias-card">
+            <h3 class="card-title">Distribución por categoría</h3>
+            @for (cat of distribucionCategorias; track cat.nombre) {
+              <div class="cat-row">
+                <div class="cat-info">
+                  <span class="cat-dot" [class]="'dot-' + cat.nombre"></span>
+                  <span class="cat-name">{{ cat.nombre | titlecase }}</span>
+                  <span class="cat-count">{{ cat.cantidad }}</span>
+                </div>
+                <div class="cat-bar-wrap">
+                  <div class="cat-bar" [style.width.%]="cat.porcentaje"></div>
+                </div>
+                <span class="cat-pct">{{ cat.porcentaje }}%</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    
+    @if (vistaActual === 'productos') {
+      <div class="view-header">
+        <div>
+          <h1>Gestión de Productos</h1>
+          <p>{{ totalProductos }} productos en el catálogo</p>
+        </div>
+        <button class="btn-primary-dash" (click)="abrirNuevo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo producto
+        </button>
+      </div>
+
+      @if (mostrarFormulario) {
+        <div class="form-panel">
+          <div class="form-panel-header">
+            <h3>{{ editando ? 'Editar producto' : 'Nuevo producto' }}</h3>
+            <button class="btn-close-form" (click)="cancelar()"></button>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre del producto">
+            </div>
+            <div class="form-group">
+              <label>Detalle (ej: 100ml)</label>
+              <input type="text" [(ngModel)]="form.detalle" placeholder="250ml, 100g...">
+            </div>
+            <div class="form-group">
+              <label>Precio (S/) *</label>
+              <input type="number" [(ngModel)]="form.precio" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Categoría</label>
+              <select [(ngModel)]="form.categoria">
+                @for (c of categorias; track c) {
+                  <option [value]="c">{{ c }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Marca</label>
+              <select [(ngModel)]="form.marca">
+                @for (m of marcas; track m) {
+                  <option [value]="m">{{ m }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>URL de imagen</label>
+              <input type="url" [(ngModel)]="form.imagen" placeholder="https://...">
+            </div>
+            <div class="form-group full">
+              <label>Descripción</label>
+              <textarea [(ngModel)]="form.descripcion" rows="2" placeholder="Descripción del producto"></textarea>
+            </div>
+            <div class="form-group full">
+              <label>Modo de uso</label>
+              <textarea [(ngModel)]="form.modoUso" rows="2" placeholder="Instrucciones de uso"></textarea>
+            </div>
+            <div class="form-group full">
+              <label>Ingredientes</label>
+              <textarea [(ngModel)]="form.ingredientes" rows="2" placeholder="Lista de ingredientes"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-save" (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar producto' }}</button>
+            <button class="btn-cancel" (click)="cancelar()">Cancelar</button>
+          </div>
+        </div>
+      }
+
+      @if (cargandoProductos) {
+        <div class="loading-state"><div class="spinner-dash"></div><span>Cargando productos...</span></div>
+      } @else {
+        <div class="tabla-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Marca</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of productos; track p.id) {
+                <tr>
+                  <td><img [src]="p.imagen" [alt]="p.nombre" class="table-img"></td>
+                  <td>
+                    <div class="td-nombre">{{ p.nombre }}</div>
+                    <div class="td-detalle">{{ p.detalle }}</div>
+                  </td>
+                  <td><span class="cat-tag" [class]="'cat-' + p.categoria">{{ p.categoria }}</span></td>
+                  <td>{{ p.marca }}</td>
+                  <td class="td-price">S/ {{ p.precio.toFixed(2) }}</td>
+                  <td>
+                    <div class="action-btns">
+                      <button class="btn-edit" (click)="editarProducto(p)" title="Editar">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </button>
+                      <button class="btn-delete" (click)="eliminar(p)" title="Eliminar">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+
+    
+    @if (vistaActual === 'carritos') {
+      <div class="view-header">
+        <div>
+          <h1>Gestión de Carritos</h1>
+          <p>{{ carritosAgrupados.length }} carritos activos · {{ totalItemsCarrito }} ítems en total</p>
+        </div>
+      </div>
+
+      @if (cargandoCarritos) {
+        <div class="loading-state"><div class="spinner-dash"></div><span>Cargando carritos...</span></div>
+      } @else if (carritosAgrupados.length === 0) {
+        <div class="empty-state-dash">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          <p>No hay ítems en ningún carrito actualmente.</p>
+        </div>
+      } @else {
+        <div class="carritos-list">
+          @for (grupo of carritosAgrupados; track grupo.usuarioId) {
+            <div class="carrito-grupo">
+              <div class="grupo-header">
+                <div class="grupo-info">
+                  <div class="usuario-avatar">U{{ grupo.usuarioId }}</div>
+                  <div>
+                    <span class="grupo-titulo">Usuario #{{ grupo.usuarioId }}</span>
+                    <span class="grupo-sub">{{ grupo.items.length }} producto(s)</span>
+                  </div>
+                </div>
+                <div class="grupo-total">S/ {{ grupo.total | number:'1.2-2' }}</div>
+              </div>
+              <div class="grupo-items">
+                @for (item of grupo.items; track item.id) {
+                  <div class="carrito-item-row">
+                    <img [src]="item.imagen" [alt]="item.nombre" class="item-img">
+                    <div class="item-info">
+                      <span class="item-nombre">{{ item.nombre }}</span>
+                      <span class="item-detalle">{{ item.detalle }}</span>
+                    </div>
+                    <div class="item-cantidad">× {{ item.cantidad }}</div>
+                    <div class="item-subtotal">S/ {{ (item.precio * item.cantidad) | number:'1.2-2' }}</div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </main>
 </div>
