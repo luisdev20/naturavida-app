@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductoService } from '../../core/services/producto.service';
@@ -15,6 +15,8 @@ import { Producto } from '../../core/models/producto.model';
 export class OfertasComponent implements OnInit {
   private productoService = inject(ProductoService);
   private carritoService = inject(CarritoService);
+  private zone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
   productosOferta: (Producto & { descuento: number; precioOriginal: number })[] = [];
   cargando = true;
@@ -27,17 +29,23 @@ export class OfertasComponent implements OnInit {
   ngOnInit(): void {
     this.productoService.getProductos().subscribe({
       next: (productos) => {
-        this.productosOferta = productos
-          .filter((_, index) => index % 3 === 0 || index % 5 === 0)
-          .map(p => ({
-            ...p,
-            descuento: Math.floor(Math.random() * (40 - 10 + 1) + 10),
-            precioOriginal: p.precio
-          }));
-        this.cargando = false;
+        this.zone.run(() => {
+          this.productosOferta = productos
+            .filter((_, index) => index % 3 === 0 || index % 5 === 0)
+            .map(p => ({
+              ...p,
+              descuento: Math.floor(Math.random() * (40 - 10 + 1) + 10),
+              precioOriginal: p.precio
+            }));
+          this.cargando = false;
+          this.cdr.detectChanges();
+        });
       },
       error: () => {
-        this.cargando = false;
+        this.zone.run(() => {
+          this.cargando = false;
+          this.cdr.detectChanges();
+        });
       }
     });
   }
