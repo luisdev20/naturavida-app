@@ -5,10 +5,11 @@ import { ItemCarrito } from '../models/carrito.model';
 import { Producto } from '../models/producto.model';
 import { Observable, tap, switchMap, forkJoin, of, map } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CarritoService {
-  private apiUrl = 'http://localhost:3000/carrito';
+  private apiUrl = `${environment.apiUrl}/carrito`;
   private _items = signal<ItemCarrito[]>([]);
   private authService = inject(AuthService);
   private platformId = inject(PLATFORM_ID);

@@ -10,6 +10,8 @@ import { Producto } from '../../core/models/producto.model';
 import { ItemCarrito } from '../../core/models/carrito.model';
 import { Usuario } from '../../core/models/usuario.model';
 
+import { environment } from '../../../environments/environment';
+
 export type Vista = 'overview' | 'productos' | 'carritos';
 
 @Component({
@@ -27,7 +29,7 @@ export class AdminComponent implements OnInit {
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
 
-  private apiBase = 'http://localhost:3000';
+  private apiBase = environment.apiUrl;
 
  
   adminNombre = '';

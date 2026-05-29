@@ -3,10 +3,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from '../models/usuario.model';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/usuarios';
+  private apiUrl = `${environment.apiUrl}/usuarios`;
   private _currentUser = signal<Usuario | null>(null);
 
   readonly currentUser = this._currentUser.asReadonly();
