@@ -1,59 +1,59 @@
-# NaturavidaApp
+NaturaVida App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
+NaturaVida es una aplicación de tienda virtual enfocada en la comercialización de productos
+naturales, orgánicos y saludables. El sistema está diseñado para ofrecer una experiencia de
+usuario fluida en la navegación y compra de productos, facilitando la gestión tanto para los
+clientes como para los administradores de la plataforma.
+Características Principales
+● Catálogo de Productos: Visualización detallada de productos organizados por
+categorías (suplementos, alimentos orgánicos, cosmética natural, etc.).
+● Carrito de Compras: Gestión dinámica de productos, cálculo de totales e impuestos en
+tiempo real.
+● Gestión de Usuarios: Registro, inicio de sesión y perfiles de usuario con historial de
+compras.
+● Persistencia Local Simulada: Gestión completa de operaciones CRUD para productos,
+usuarios y pedidos.
+Arquitectura y Tecnologías
+El proyecto está desarrollado utilizando una arquitectura frontend moderna conectada a una
+API REST simulada para el desarrollo ágil:
+● Frontend: Desarrollado con Angular, aprovechando su sistema de componentes,
+servicios para la lógica de negocio y enrutamiento modular.
+● Backend (Simulado): Configurado mediante JSON Server, que proporciona una API
+REST completa y operaciones CRUD a partir de un archivo de origen en formato JSON.
+Requisitos Previos
+Para ejecutar este proyecto de forma local, asegúrese de tener instalado:
+● Node.js (Versión LTS recomendada)
+● Angular CLI (Instalado de forma global mediante npm install -g @angular/cli)
+● Un entorno de desarrollo (IDE) como VS Code o similar
+Configuración e Instalación
+Servidor de Datos (JSON Server)
+1. Navegue al directorio del servidor o donde se encuentre el archivo de base de datos
+simulada:
+cd naturavida-app/backend
+2. Instale JSON Server de forma local si no lo ha hecho previamente:
+npm install json-server
+3. Inicie el servidor simulado (por defecto en el puerto 3000):
+npx json-server --watch db.json
+Frontend (Angular)
+1. Navegue al directorio de la aplicación frontend:
+cd naturavida-app/frontend
+2. Instale las dependencias del proyecto:
+npm install
+3. Inicie el servidor de desarrollo de Angular:
 ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+4. Abra su navegador web e ingrese a la dirección http://localhost:4200/.
+Estructura del Repositorio
+● /src/app: Componentes, servicios, guardas y módulos principales de la aplicación
+Angular.
+● /src/assets: Archivos estáticos, imágenes de productos y configuraciones globales.
+● /backend: Archivo db.json que actúa como la base de datos del proyecto y
+configuraciones de las rutas de JSON Server.
+Contribuciones
+1. Realice un Fork del repositorio.
+2. Cree una nueva rama para su funcionalidad: git checkout -b feature/NuevaFuncionalidad.
+3. Realice sus cambios y haga un commit: git commit -m 'Añadir nueva funcionalidad'.
+4. Suba los cambios a su rama: git push origin feature/NuevaFuncionalidad.
+5. Abra un Pull Request detallando los cambios realizados.
+Licencia
+Este proyecto está bajo la Licencia MIT. Para más detalles, consulte el archivo LICENSE
+adjunto en este repositorio.
